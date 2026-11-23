@@ -1,0 +1,46 @@
+generator client {
+  provider  = "prisma-client"
+  // Prisma ORM은 스키마 파일을 읽어 들여서 Typescript를 생성해줌
+  output    = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  relationMode = "prisma"
+}
+
+// enum 타입을 생성
+enum GenderType {
+  MALE
+  FEMALE
+}
+
+enum RoleType {
+  ADIN
+  USER
+}
+
+// 이 아랫부분에는 내가 실제 데이터베이스에 사용할 모델링을 기재 -> Prisma 문법을 통해
+// model 키워들 써서 만들어낸 것은
+// Javascript에서는 '객체/가 되면, DB에서는 테이블이 됨
+// 옵션-----
+// @id : primary key
+// @default (값): default
+// @unique: unique
+
+model User {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now()) // 삽입할 때 기본값으로 삽입 시간을 자동으로 기록
+  updateAt    DateTime   @updatedAt
+  deletedAt   DateTime? // 타입에 ?를 넣으면 null을 허용한다는 것
+  username    String     @unique
+  password    String
+  nickname    String     @unique
+  email       String     @unique
+  phoneNumber String     @unique // 전화번호는 통신사에 전화만 하면 바로 바꿀 수 있기 때문에, unique를 거는 것은 쉽지 않다.
+  zipcode     String
+  adress1     String
+  adrees2     String
+  gender      GenderType
+  role        RoleType   @default(USER)
+}
