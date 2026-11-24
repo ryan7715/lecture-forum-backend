@@ -1,7 +1,7 @@
 import { type Request, type Response} from "express";
 import userService from "../services/userService.ts";
-import {User} from "../generated/prisma/client.ts";
 import { UserCreateInput } from "../generated/prisma/models/User.ts";
+import passwordUtility from "../utils/password/passwordUtility.ts";
 
 // UserController라는 이름의 "user"sms
 // 경로상에서 /user로 시작되는 요청이 들어오게 되는 곳이라서 userController임
@@ -12,11 +12,10 @@ import { UserCreateInput } from "../generated/prisma/models/User.ts";
 
 // 컨트롤러 계층은 프로그램 내부에서 데이터를 조작하는 1차 일꾼
 
-const createUser =  (req: Request, res: Response) => {
+const createUser =  async (req: Request, res: Response) => {
   // 1. 프론트 엔드에서 보내온 정보를 편지에서 읽고
     try {
     const { username, password, nickname, email, phoneNumber, gender, role } = req.body;
-
 
 
   // 2. 그 정보가 옳은 지 판단하고
@@ -26,12 +25,12 @@ const createUser =  (req: Request, res: Response) => {
  // 3-0. 데이터베이스에게 보내 줄, 'User 테이블에 추가할 데이터'를 만들어줌
     const newUser: UserCreateInput = {
         username: username,
-        password: password,
+        password: await passwordUtility.hashPassword(password),
         nickname: nickname,
         email: email,
         phoneNumber: phoneNumber,
         gender: gender,
-        role: role,
+        role: "USER",
     };
 
   // 3-1 데이터베이스에게 newUser 내용을 저장하도록 요청

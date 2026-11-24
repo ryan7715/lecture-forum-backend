@@ -31,7 +31,7 @@ enum RoleType {
 model User {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now()) // 삽입할 때 기본값으로 삽입 시간을 자동으로 기록
-  updateAt    DateTime   @updatedAt
+  updatedAt    DateTime   @updatedAt
   deletedAt   DateTime? // 타입에 ?를 넣으면 null을 허용한다는 것
   username    String     @unique
   password    String
@@ -39,8 +39,8 @@ model User {
   email       String     @unique
   phoneNumber String     @unique // 전화번호는 통신사에 전화만 하면 바로 바꿀 수 있기 때문에, unique를 거는 것은 쉽지 않다.
   zipcode     String?
-  adress1     String?
-  adrees2     String?
+  address1     String?
+  addrees2     String?
   gender      GenderType
   role        RoleType   @default(USER)
 }

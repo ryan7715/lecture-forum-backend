@@ -2,10 +2,10 @@
 // userService 라는 이름의 "user"는
 // 테이버베이스에서 user라는 테이블과 상호작용하는 일꾼이라서 userService임
 
-
+import { UserCreateInput } from "../generated/prisma/models/User.ts";
 import prisma from "../config/prisma.ts";
 
-const createUser = async (data) => {
+const createUser = async (data: UserCreateInput) => {
     // User 객체를 받아서
     // 데이터베이스에 쓰는 일 => prisma.해당 테이블 명.create()
 
