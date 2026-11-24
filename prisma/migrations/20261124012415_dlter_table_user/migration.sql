@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `User` MODIFY `zipcode` VARCHAR(191) NULL,
+    MODIFY `adress1` VARCHAR(191) NULL,
+    MODIFY `adrees2` VARCHAR(191) NULL;

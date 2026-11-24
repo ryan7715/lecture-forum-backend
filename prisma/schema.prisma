@@ -38,9 +38,9 @@ model User {
   nickname    String     @unique
   email       String     @unique
   phoneNumber String     @unique // 전화번호는 통신사에 전화만 하면 바로 바꿀 수 있기 때문에, unique를 거는 것은 쉽지 않다.
-  zipcode     String
-  adress1     String
-  adrees2     String
+  zipcode     String?
+  adress1     String?
+  adrees2     String?
   gender      GenderType
   role        RoleType   @default(USER)
 }
