@@ -16,7 +16,7 @@ enum GenderType {
 }
 
 enum RoleType {
-  ADIN
+  ADMIN
   USER
 }
 
