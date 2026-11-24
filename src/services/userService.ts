@@ -3,7 +3,9 @@
 // 테이버베이스에서 user라는 테이블과 상호작용하는 일꾼이라서 userService임
 
 
-const createUser = async (date) => {
+import prisma from "../config/prisma.ts";
+
+const createUser = async (data) => {
     // User 객체를 받아서
     // 데이터베이스에 쓰는 일 => prisma.해당 테이블 명.create()
 
@@ -16,14 +18,24 @@ const createUser = async (date) => {
     // 비동기 함수에는 await 키워드를 붙이고, 그걸 감싸고 있는 부모 함수에 async를 붙여야 함
     // 이렇게 하면 비동기 함수가 실행해서 결과가 도착할 때까지 기다림
 
+
+    // async - await을 쓰면 "성공"에 대한 내용만 작성하게 돼.
+    // 그렇다면 async -await을 쓸 때 "실패"에 대한 내용은 어디에 작성해야 되냐?
+    // async - await을 하면 try -catch로 묶어줘야 함
+
     // prisma의 create에 명령을 내리면
     // 그에 대한 결과는 "생성된" 데이터베이스 칼럼 정보가 도착함
-    const result = prisma.user.create({
-       date
-    });
+    try {
+        const result = await prisma.user.create({
+            data,
+        });
+        return result;
+    } catch(error) {
+       console.log(error)
+    }
 
-    return result;
-};
+
+}
 
 export default {
     createUser,

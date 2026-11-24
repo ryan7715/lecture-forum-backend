@@ -26,8 +26,8 @@ app.use(express.urlencoded({ extended: true}));
 // 이 앱에 Request가 들어올 때의 경로를 읽어서
 // 첫 번째 매개변수의 값인 '/user'로 시작하면, 두 번째 매개변수의 파일로 Routing 시킴
 app.use("/user", userRouter)
-app.use("/post", postRouter);
-app.use("/notice", noticeRouter);
+// app.use("/post", postRouter);
+// app.use("/notice", noticeRouter);
 
 
 
