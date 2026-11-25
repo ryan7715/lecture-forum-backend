@@ -30,7 +30,7 @@ const createUser =  async (req: Request, res: Response) => {
         email: email,
         phoneNumber: phoneNumber,
         gender: gender,
-        role: "USER",
+        role: role,
     };
 
   // 3-1 데이터베이스에게 newUser 내용을 저장하도록 요청
