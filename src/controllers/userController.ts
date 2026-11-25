@@ -33,10 +33,9 @@ const createUser =  async (req: Request, res: Response) => {
   // 3. 이미 User 테이블에 등록된 '사용자'라는 뜻을 담은 데이터 덩어리가 아니라
  // 3-0. 데이터베이스에게 보내 줄, 'User 테이블에 추가할 데이터'를 만들어줌
     const newUser: UserCreateInput = {
-        username: username,
         ...validateUser,
         password: await passwordUtility.hashPassword(password),
-
+    };
 
   // 3-1 데이터베이스에게 newUser 내용을 저장하도록 요청
   //     데이터베이스와 통신을 하는 일을 service도, 내부에서 일이 끝날 때까지 기다려야 함

@@ -16,4 +16,4 @@ export const createUser = z.object({
 // 위에서 만든 createUserSchema는 조건을 건 "객체"를 만들어내는 일이라,
 // 앞으로 다른 곳에서 사용할 수 있는 타입을 infer로 만들어냄
 
-export type CreateUserInputType = z.infer<typeof createUserSchema>;
+export type CreateUserInputType = z.infer<typeof createUser>;
