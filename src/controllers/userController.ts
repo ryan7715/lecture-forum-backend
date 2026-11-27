@@ -39,14 +39,35 @@ const createUser =  async (req: Request, res: Response) => {
 
   // 3-1 데이터베이스에게 newUser 내용을 저장하도록 요청
   //     데이터베이스와 통신을 하는 일을 service도, 내부에서 일이 끝날 때까지 기다려야 함
-  const result = await userService.createUser(newUser);
+
+  // 위에서 이미 password라는 이름의 변수를 쓰고 있음,
+  //구조분해할당을 하려고 하는데 -> 그래서 객체 안의 key 이름을 변수명으로 써서 구조분해 할당을 해야 하는데
+  //                             이미 쓰고 있는 상황이라 불가능함
+  //                             '이름을 바꿔서 쓰겠다.'라고 password: 변수명을 쓸 수 있음
+  const { password: _ , ...etc } = await userService.createUser(newUser);
 
   // 4. 회원가입이 됐다는 내용으로 택배를 보낸다.
  // 여기서부터는 응당 (Response)처리
  // res라는, 앞으로 응답에 나갈 박스에
  // result 결과를 json으로 가공하여 넣음
- res.status(201).json(result);
+ res.status(201).json(etc);
  } catch (error) {
+        // try를 실행할 때, 어디서든지 에러 날 경우 catch 절이 실행이 됨
+
+        // 프리지마에서 발생된 에러인지 내로잉
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            // Prisma error 개체 내부에 code 항목 값이 "P2002"인 것은
+            // 중복값이 있을 때의 에러 코드임
+            if (error.code === "P2002")
+                const errorMessage = error.message;
+
+            if (error.Message.includes("ncikname")) {
+                res.status(409).json({message: "이미 사용 중인 닉네임입니다."});
+            }
+            if (error.Message.includes("email")) {
+                res.status(409).json({message: "이미 사용 중인 이메일입니다."});
+            }
+        }
         console.log(error);
         res.status(500).json({ message: "유저 생성 중 오류가 발생하였습니다."})
     }
