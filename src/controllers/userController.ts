@@ -78,6 +78,28 @@ const createUser =  async (req: Request, res: Response) => {
  }
 };
 
+const login = async (req: Request, res: Response) => {
+    try {
+        // login 이라는 기능은,
+        // 들어온 비밀번호 값과 데이터베이스에서 조회해서 가져온 비밀번호 값을 비교하는 일
+        const { username, password} = req.body;
+
+        const user = await userService.getUserByUsername(username)
+        if (!user || user.deletedAt) {
+            throw new Error("INVALID_CREDENTIALS");
+        }
+
+        const isValid = await passwordUtility.verifyPassword(password, user.password);     ///  비밀번호 검증해서 맞으면 true, 틀리면 false
+        if (!isValid) {
+            throw new Error("INVALID_CREDENTIALS");
+        }
+
+        // 사용자 확인은 끝났고, 로그인 처리를 진행
+    } catch (error) {
+    }
+};
+
+
 const updateUser = (req: Request, res: Response)  => {
 
 };
