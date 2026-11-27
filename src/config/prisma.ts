@@ -8,6 +8,7 @@
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "../generated/prisma/client.ts";
 import { UserCreateInput } from "../generated/prisma/models/User.ts";
+import "dotenv/config";
 
 const creatUser = async (data: UserCreateInput) => {};
 
