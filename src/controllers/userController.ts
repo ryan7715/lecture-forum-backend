@@ -3,6 +3,7 @@ import userService from "../services/userService.ts";
 import { UserCreateInput } from "../generated/prisma/models/User.ts";
 import passwordUtility from "../utils/password/passwordUtility.ts";
 import {CreateUserInputType} from "../schemas/user/createUser.ts";
+import { Prisma } from "../generated/prisma/client.ts";
 
 // UserController라는 이름의 "user"sms
 // 경로상에서 /user로 시작되는 요청이 들어오게 되는 곳이라서 userController임
@@ -52,25 +53,29 @@ const createUser =  async (req: Request, res: Response) => {
  // result 결과를 json으로 가공하여 넣음
  res.status(201).json(etc);
  } catch (error) {
-        // try를 실행할 때, 어디서든지 에러 날 경우 catch 절이 실행이 됨
+     // try를 실행할 때, 어디서든지 에러 날 경우 catch 절이 실행이 됨
 
-        // 프리지마에서 발생된 에러인지 내로잉
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            // Prisma error 개체 내부에 code 항목 값이 "P2002"인 것은
-            // 중복값이 있을 때의 에러 코드임
-            if (error.code === "P2002")
-                const errorMessage = error.message;
+     // 프리즈마에서 발생된 에러인지 내로잉
+     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+         // Prisma error 객체 내부에서 code 항목 값이 "P2002"인 것은
+         // 중복값이 있을 때의 에러코드임
+         if (error.code === "P2002") {
+             const errorMessage = error.message;
 
-            if (error.Message.includes("ncikname")) {
-                res.status(409).json({message: "이미 사용 중인 닉네임입니다."});
-            }
-            if (error.Message.includes("email")) {
-                res.status(409).json({message: "이미 사용 중인 이메일입니다."});
-            }
-        }
-        console.log(error);
-        res.status(500).json({ message: "유저 생성 중 오류가 발생하였습니다."})
-    }
+             if (errorMessage.includes("username")) {
+                 res.status(409).json({ message: "이미 사용 중인 아이디 입니다." });
+             }
+             if (errorMessage.includes("nickname")) {
+                 res.status(409).json({ message: "이미 사용 중인 닉네임 입니다." });
+             }
+             if (errorMessage.includes("email")) {
+                 res.status(409).json({ message: "이미 사용 중인 이메일 입니다." });
+             }
+         }
+     }
+     console.log(error);
+     res.status(500).json({ message: "유저 생성 중 오류가 발생하였습니다." });
+ }
 };
 
 const updateUser = (req: Request, res: Response)  => {
